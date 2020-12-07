@@ -26,32 +26,13 @@ def universal_artillery(g=9.81, m=1.0, rho=1.22, C=0.47, R=0.08, h=0.001, theta=
         fvx = -const*vx*np.sqrt(vx**2+vy**2)
         fvy = -g-const*vy*np.sqrt(vx**2+vy**2)
         return np.array([fx,fy,fvx,fvy],float)
-
-    # containers for output
-    r = np.array([0.0,0.0,v0*np.cos(theta),v0*np.sin(theta)],float)
-    xpoints = []
-    ypoints = []
-
-    # use fourth-order Runge-Kutta
-    while r[1]>=0:
-        k1 = h*f(r,const)
-        k2 = h*f(r+0.5*k1,const)
-        k3 = h*f(r+0.5*k2,const)
-        k4 = h*f(r+k3,const)
-        r += (k1+2*k2+2*k3+k4)/6
-        xpoints.append(r[0])
-        ypoints.append(r[1])
-
-    # make plot for part (b)
-    p1 = plt.figure(1)
-    plt.plot(xpoints,ypoints)
-    plt.xlabel("x [m]")
-    plt.ylabel('y [m]')
-    plt.show()
-
+    
     # try different values of m
-    p2 = plt.figure(2)
-    for m in [0.25,0.5,1,2,4]:
+    masses = np.linspace(0.1, 10, num=10)
+    # list of ranges. Range is last point in ypoints
+    yranges = []
+    xranges = []
+    for m in masses:
         const = (rho*C*np.pi*R**2)/(2.0*m)
         r = np.array([0.0,0.0,v0*np.cos(theta),v0*np.sin(theta)],float)
         xpoints = []
@@ -67,18 +48,25 @@ def universal_artillery(g=9.81, m=1.0, rho=1.22, C=0.47, R=0.08, h=0.001, theta=
             xpoints.append(r[0])
             ypoints.append(r[1])
 
-        # print results
-        print(m)
-        print(xpoints[-1], ypoints[-1])
-        print()
-        plt.plot(xpoints,ypoints,label='m = '+str(m)+' kg')
+        # append range to ranges
+        xranges.append(xpoints[-1])
+        yranges.append(max(ypoints))
 
-    plt.xlabel("x [m]")
-    plt.ylabel('y [m]')
-    plt.legend()
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 4))
+    ax[0].plot(masses, xranges)
+    ax[0].set_xlabel("mass [kg]")
+    ax[0].set_ylabel('range [m]')
+    ax[1].plot(masses, yranges)
+    ax[1].set_xlabel("mass [kg]")
+    ax[1].set_ylabel('maximum height [m]')
+    
+    #plt.legend()
+    plt.tight_layout()
     plt.show()
 
 if __name__ == "__main__":
-    universal_artillery(g=3.71, rho=0.20)
     # DONE: part a
-    # TODO: parts b, c
+    # part b
+    universal_artillery(g=3.71, rho=0.20)
+    # part c: try 10 times the v0
+
