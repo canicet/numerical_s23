@@ -67,6 +67,10 @@ def universal_artillery(g=9.81, m=1.0, rho=1.22, C=0.47, R=0.08, h=0.001, theta=
             xpoints.append(r[0])
             ypoints.append(r[1])
 
+        # print results
+        print(m)
+        print(xpoints[-1], ypoints[-1])
+        print()
         plt.plot(xpoints,ypoints,label='m = '+str(m)+' kg')
 
     plt.xlabel("x [m]")
@@ -75,5 +79,6 @@ def universal_artillery(g=9.81, m=1.0, rho=1.22, C=0.47, R=0.08, h=0.001, theta=
     plt.show()
 
 if __name__ == "__main__":
-    universal_artillery()
     universal_artillery(g=3.71, rho=0.20)
+    # DONE: part a
+    # TODO: parts b, c
