@@ -28,7 +28,7 @@ def universal_artillery(g=9.81, m=1.0, rho=1.22, C=0.47, R=0.08, h=0.001, theta=
         return np.array([fx,fy,fvx,fvy],float)
     
     # try different values of m
-    masses = np.linspace(0.1, 10, num=50)
+    masses = np.linspace(0.1, 10, num=10)
     # list of ranges. Range is last point in ypoints
     yranges = []
     xranges = []
@@ -49,24 +49,24 @@ def universal_artillery(g=9.81, m=1.0, rho=1.22, C=0.47, R=0.08, h=0.001, theta=
             ypoints.append(r[1])
 
         # append range to ranges
-        xranges.append(xpoints[-1]/1000)
-    return xranges, masses
+        xranges.append(xpoints[-1])
+        yranges.append(max(ypoints))
+
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 4))
+    ax[0].plot(masses, xranges)
+    ax[0].set_xlabel("mass [kg]")
+    ax[0].set_ylabel('range [m]')
+    ax[1].plot(masses, yranges)
+    ax[1].set_xlabel("mass [kg]")
+    ax[1].set_ylabel('maximum height [m]')
     
+    #plt.legend()
+    plt.tight_layout()
+    plt.show()
 
 if __name__ == "__main__":
     # DONE: part a
     # part b
-    mars_r, mars_m = universal_artillery(g=3.71, rho=0.20)
-    earth_r, earth_m = universal_artillery()
-    plt.plot(mars_m, mars_r, label="Mars")
-    plt.plot(earth_m, earth_r, label="Earth")
-    plt.legend()
-    plt.xlabel("mass [kg]")
-    plt.ylabel('range [km]')
-    
-    #plt.legend()
-    plt.tight_layout()
-    plt.savefig("mars_vs_earth.png", dpi=300)
-    plt.show()
+    universal_artillery(g=3.71, rho=0.20)
     # part c: try 10 times the v0
 
